@@ -995,10 +995,12 @@
             const hasNotes = notesData[date] && notesData[date].trim() !== '';
 
             const [dayNum, monthNum] = date.split('/');
-            let fastingEndDate = new Date(2025, parseInt(monthNum) - 1, parseInt(dayNum));
-            fastingEndDate.setDate(fastingEndDate.getDate() + 1);
-            let fastingEndTime = fastingEndDate.getDate().toString().padStart(2, '0') + '/' +
-                (fastingEndDate.getMonth() + 1).toString().padStart(2, '0');
+            const startDate = new Date(2025, parseInt(monthNum) - 1, parseInt(dayNum), 3, 40); // 03:40 AM
+            const endDate = new Date(startDate.getTime() + 36 * 60 * 60 * 1000); // Add 36 hours in ms
+        
+            const fastingStart = `${startDate.getDate().toString().padStart(2,'0')}/${(startDate.getMonth()+1).toString().padStart(2,'0')} ${startDate.getHours().toString().padStart(2,'0')}:${startDate.getMinutes().toString().padStart(2,'0')}`;
+            const fastingEnd = `${endDate.getDate().toString().padStart(2,'0')}/${(endDate.getMonth()+1).toString().padStart(2,'0')} ${endDate.getHours().toString().padStart(2,'0')}:${endDate.getMinutes().toString().padStart(2,'0')}`;
+
 
             const badges = [];
             if (day.gym) badges.push('<span class="mini-badge gym" style="padding: 10px 20px; font-size: 0.95rem;">💪 جيم</span>');
