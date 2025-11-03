@@ -1,0 +1,26 @@
+{
+  "name": "برنامج صيام داوود عليه السلام",
+  "short_name": "صيام داوود",
+  "description": "رحلة روحانية مباركة - برنامج صيام وصلاة داوود عليه السلام",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#2d1b3d",
+  "theme_color": "#2d1b3d",
+  "orientation": "portrait-primary",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "favicon_io/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "favicon_io/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
