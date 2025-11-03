@@ -1,7 +1,7 @@
 const CACHE_NAME = 'davidic-fasting-v1';
 const urlsToCache = [
   '/',
-  '/fastAndPray.html',
+  '/index.html',
   '/manifest.json',
   'https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;600;700&display=swap'
 ];
