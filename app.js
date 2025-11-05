@@ -371,20 +371,97 @@ function onVolumeChange(e){
 }
 
 // Location
+// عكس الإحداثيات إلى مدينة/بلد عبر OSM (يدعم CORS)
+async function reverseGeocodeOSM(lat, lon){
+  const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=10&addressdetails=1&accept-language=ar,en`;
+  const res = await fetch(url); // لا تضيفي User-Agent؛ المتصفح يمنعه
+  if (!res.ok) throw new Error('Reverse geocode failed');
+  const data = await res.json();
+  const addr = data.address || {};
+  return {
+    city: addr.city || addr.town || addr.village || addr.municipality || '',
+    country: addr.country || '',
+    country_code: (addr.country_code || '').toUpperCase()
+  };
+}
+
+// بدائل IP مجانية تدعم CORS
+async function ipWho(){
+  const res = await fetch('https://ipwho.is/?fields=city,country,country_code,latitude,longitude,success,message');
+  const d = await res.json();
+  if (!d.success) throw new Error(d.message || 'ipwho.is failed');
+  return { city:d.city, country:d.country, country_code:d.country_code, latitude:d.latitude, longitude:d.longitude };
+}
+async function geoJs(){
+  const res = await fetch('https://get.geojs.io/v1/ip/geo.json');
+  if (!res.ok) throw new Error('geojs failed');
+  const d = await res.json();
+  return { city:d.city, country:d.country, country_code:d.country_code, latitude:+d.latitude, longitude:+d.longitude };
+}
+
+// بديل JSONP بدون CORS (اختياري)
+function jsonp(url){
+  return new Promise((resolve, reject)=>{
+    const cb = '__ipcb_' + Math.random().toString(36).slice(2);
+    const s = document.createElement('script');
+    const cleanup = ()=>{ delete window[cb]; s.remove(); };
+    window[cb] = (data)=>{ cleanup(); resolve(data); };
+    s.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + cb;
+    s.onerror = ()=>{ cleanup(); reject(new Error('JSONP error')); };
+    document.head.appendChild(s);
+  });
+}
+async function ipApiJsonp(){
+  const d = await jsonp('https://ip-api.com/json/?fields=status,country,countryCode,city,lat,lon,message');
+  if (d.status !== 'success') throw new Error(d.message || 'ip-api failed');
+  return { city:d.city, country:d.country, country_code:d.countryCode, latitude:d.lat, longitude:d.lon };
+}
+
+// 👇 الدالة الرئيسية الجديدة
 async function detectLocation(){
   try{
-    const response = await fetch('https://ipapi.co/json/');
-    if (!response.ok) throw new Error('Location API failed');
-    const data = await response.json();
-    if (data.error) throw new Error(data.reason || 'Location detection failed');
+    // 1) جرّب Geolocation (الأفضل والأدق)
+    if ('geolocation' in navigator){
+      const pos = await new Promise((res, rej)=>navigator.geolocation.getCurrentPosition(res, rej, { enableHighAccuracy:true, timeout:8000 }));
+      const lat = pos.coords.latitude, lon = pos.coords.longitude;
+      const place = await reverseGeocodeOSM(lat, lon);
+      settings.city = place.city || settings.city || '';
+      settings.country = place.country_code || settings.country || '';
+      settings.countryName = place.country || settings.countryName || '';
+      settings.latitude = lat;
+      settings.longitude = lon;
+      updateLocationDisplay();
+      return;
+    }
+    throw new Error('Geolocation not available');
+  }catch(e){
+    // 2) بدائل IP مع CORS
+    try{
+      const d = await ipWho();
+      settings.city = d.city; settings.country = d.country_code; settings.countryName = d.country;
+      settings.latitude = d.latitude; settings.longitude = d.longitude;
+      updateLocationDisplay();
+      return;
+    }catch{}
+    try{
+      const d2 = await geoJs();
+      settings.city = d2.city; settings.country = d2.country_code; settings.countryName = d2.country;
+      settings.latitude = d2.latitude; settings.longitude = d2.longitude;
+      updateLocationDisplay();
+      return;
+    }catch{}
+    // 3) JSONP (بدون CORS)
+    try{
+      const d3 = await ipApiJsonp();
+      settings.city = d3.city; settings.country = d3.country_code; settings.countryName = d3.country;
+      settings.latitude = d3.latitude; settings.longitude = d3.longitude;
+      updateLocationDisplay();
+      return;
+    }catch{}
 
-    settings.country = data.country_code || 'MA';
-    settings.countryName = data.country_name || 'Morocco';
-    settings.city = data.city || 'El Jadida';
-    settings.latitude = data.latitude || 32.25;
-    settings.longitude = data.longitude || -8.51;
-    updateLocationDisplay();
-  }catch{
+    // 4) أخيرًا… افتراضي آمن
+    settings.country = 'MA'; settings.countryName = 'Morocco';
+    settings.city = 'El Jadida'; settings.latitude = 32.25; settings.longitude = -8.51;
     updateLocationDisplay();
   }
 }
