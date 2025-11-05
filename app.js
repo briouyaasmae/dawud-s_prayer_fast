@@ -1,6 +1,6 @@
 // app.js
 // =========================
-// i18n Translations
+/* i18n Translations */
 // =========================
 const i18n = {
   ar: {
@@ -89,6 +89,10 @@ const i18n = {
     tomorrow: "الغد",
     time_for_prayer: (p, city, time, day) => `⏰ حان الآن وقت ${p} (${city})`,
     time_label: (t, day) => `الوقت: ${t} • ${day}`,
+
+    // NEW
+    country_blocked: "هذه الدولة غير مدعومة في التطبيق.",
+    region_blocked: "تم اكتشاف منطقة غير مدعومة، تم استخدام إعدادات افتراضية.",
 
     day_names: ['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت']
   },
@@ -179,9 +183,17 @@ const i18n = {
     time_for_prayer: (p, city, time, day) => `⏰ It's time for ${p} in ${city}`,
     time_label: (t, day) => `Time: ${t} • ${day}`,
 
+    // NEW
+    country_blocked: "This country is not supported in the app.",
+    region_blocked: "Unsupported region detected; default settings were used.",
+
     day_names: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
   }
 };
+
+// === Blocklist: Israel (IL) & Western Sahara (EH)
+const BLOCKED_COUNTRIES = new Set(['IL', 'EH']);
+const isBlockedCountry = (code)=> !!code && BLOCKED_COUNTRIES.has(String(code).toUpperCase());
 
 let currentLang = 'ar';
 function t(key, ...args){
@@ -260,6 +272,10 @@ function debounce(fn, wait = 300) {
 function loadSettings(){
   const saved = localStorage.getItem('davidicSettings');
   if (saved) settings = { ...settings, ...JSON.parse(saved) };
+  // sanitize blocked country if previously saved
+  if (isBlockedCountry(settings.country)) {
+    settings.country = 'MA'; settings.countryName = 'Morocco';
+  }
   currentLang = settings.lang || 'ar';
 }
 function loadNotes(){
@@ -425,6 +441,16 @@ async function detectLocation(){
       const pos = await new Promise((res, rej)=>navigator.geolocation.getCurrentPosition(res, rej, { enableHighAccuracy:true, timeout:8000 }));
       const lat = pos.coords.latitude, lon = pos.coords.longitude;
       const place = await reverseGeocodeOSM(lat, lon);
+
+      if (isBlockedCountry(place.country_code)) {
+        showToast(t('region_blocked'), true);
+        // fallback to your safe defaults
+        settings.country = 'MA'; settings.countryName = 'Morocco';
+        settings.city = 'El Jadida'; settings.latitude = 32.25; settings.longitude = -8.51;
+        updateLocationDisplay();
+        return;
+      }
+
       settings.city = place.city || settings.city || '';
       settings.country = place.country_code || settings.country || '';
       settings.countryName = place.country || settings.countryName || '';
@@ -438,6 +464,7 @@ async function detectLocation(){
     // 2) بدائل IP مع CORS
     try{
       const d = await ipWho();
+      if (isBlockedCountry(d.country_code)) throw new Error('blocked-region');
       settings.city = d.city; settings.country = d.country_code; settings.countryName = d.country;
       settings.latitude = d.latitude; settings.longitude = d.longitude;
       updateLocationDisplay();
@@ -445,6 +472,7 @@ async function detectLocation(){
     }catch{}
     try{
       const d2 = await geoJs();
+      if (isBlockedCountry(d2.country_code)) throw new Error('blocked-region');
       settings.city = d2.city; settings.country = d2.country_code; settings.countryName = d2.country;
       settings.latitude = d2.latitude; settings.longitude = d2.longitude;
       updateLocationDisplay();
@@ -453,6 +481,7 @@ async function detectLocation(){
     // 3) JSONP (بدون CORS)
     try{
       const d3 = await ipApiJsonp();
+      if (isBlockedCountry(d3.country_code)) throw new Error('blocked-region');
       settings.city = d3.city; settings.country = d3.country_code; settings.countryName = d3.country;
       settings.latitude = d3.latitude; settings.longitude = d3.longitude;
       updateLocationDisplay();
@@ -605,9 +634,29 @@ async function saveSettings(){
   if (latInput && lngInput){
     settings.latitude = parseFloat(latInput);
     settings.longitude = parseFloat(lngInput);
+    // Validate coords via reverse geocode (blocklist)
+    try{
+      const place = await reverseGeocodeOSM(settings.latitude, settings.longitude);
+      if (isBlockedCountry(place.country_code)) {
+        showToast(t('country_blocked'), true);
+        return;
+      }
+      if (!settings.country || settings.country.length !== 2) {
+        settings.country = place.country_code || settings.country;
+        settings.countryName = place.country || settings.countryName;
+      }
+    }catch(e){
+      console.warn('Reverse check failed:', e);
+    }
   }else if (settings.city && settings.country){
     showToast(t('coords_searching'));
     await getCityCoordinates(settings.city, settings.country);
+  }
+
+  // Block on manual country pick if somehow set to blocked
+  if (isBlockedCountry(settings.country)) {
+    showToast(t('country_blocked'), true);
+    return;
   }
 
   settings.calculationMethod = parseInt(document.getElementById('calculationMethod').value);
@@ -645,6 +694,12 @@ async function getCityCoordinates(city, countryCode){
     if (data && data.length>0){
       const addr = data[0].address || {};
       const cc = (addr.country_code || '').toUpperCase();
+
+      if (isBlockedCountry(cc)) {
+        showToast(t('country_blocked'), true);
+        return;
+      }
+
       settings.latitude = parseFloat(data[0].lat);
       settings.longitude = parseFloat(data[0].lon);
       if (cc) settings.country = cc;
@@ -676,6 +731,7 @@ async function loadCountries(){
     { code:'GB', name:'United Kingdom', nameAr:'بريطانيا' }, { code:'DE', name:'Germany', nameAr:'ألمانيا' }, { code:'US', name:'United States', nameAr:'أمريكا' },
     { code:'CA', name:'Canada', nameAr:'كندا' }, { code:'ES', name:'Spain', nameAr:'إسبانيا' }, { code:'IT', name:'Italy', nameAr:'إيطاليا' },
     { code:'ID', name:'Indonesia', nameAr:'إندونيسيا' }, { code:'PK', name:'Pakistan', nameAr:'باكستان' }, { code:'BD', name:'Bangladesh', nameAr:'بنغلاديش' }
+    // Note: IL and EH intentionally not present in fallback
   ];
   try{
     const response = await fetch('https://restcountries.com/v3.1/all?fields=cca2,name,nativeName,translations');
@@ -694,10 +750,13 @@ async function loadCountries(){
   }catch{
     countries = fallbackCountries.sort((a,b)=> (currentLang==='ar'?a.nameAr.localeCompare(b.nameAr,'ar'):a.name.localeCompare(b.name,'en')));
   }
+  // Filter out blocked countries
+  countries = countries.filter(c => !isBlockedCountry(c.code));
+
   const select = document.getElementById('countrySelect');
   select.innerHTML = `<option value="">${t('country_loading')}</option>` +
     countries.map(c=>`<option value="${c.code}">${currentLang==='ar'?c.nameAr:c.name}</option>`).join('');
-  if (settings.country) select.value = settings.country;
+  if (settings.country && !isBlockedCountry(settings.country)) select.value = settings.country;
 }
 
 // Notes Import/Export & Toast
@@ -1076,6 +1135,8 @@ async function fetchCitySuggestions(query, countryCode){
       const country_code = (addr.country_code||'').toUpperCase();
       return { display:item.display_name, city, state, country, country_code, lat:+item.lat, lon:+item.lon };
     });
+    // Filter out blocked countries from suggestions
+    citySuggestionsData = citySuggestionsData.filter(it => !isBlockedCountry(it.country_code));
     renderCitySuggestions(citySuggestionsData);
   }catch(e){ if (e.name!=='AbortError') console.warn('City suggestions error:', e); }
 }
@@ -1097,6 +1158,12 @@ function hideCitySuggestions(){
 }
 function selectCitySuggestion(index){
   const it = citySuggestionsData[index]; if (!it) return;
+
+  if (isBlockedCountry(it.country_code)) {
+    showToast(t('country_blocked'), true);
+    return;
+  }
+
   const cityInput = document.getElementById('cityInput');
   const latInput = document.getElementById('latitudeInput');
   const lonInput = document.getElementById('longitudeInput');
