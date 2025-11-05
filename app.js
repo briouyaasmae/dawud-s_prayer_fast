@@ -95,7 +95,7 @@ const i18n = {
   en: {
     app_title: "Davidic Fasting & Prayer Planner — Advanced",
     header_title: "Davidic Fasting & Prayer Planner",
-    header_subtitle: "A blessed spiritual journey • full month",
+    header_subtitle: "A blessed spiritual journey",
     loc_detecting: "Detecting location...",
     btn_grid: "📅 Grid View",
     btn_list: "📋 List View",
