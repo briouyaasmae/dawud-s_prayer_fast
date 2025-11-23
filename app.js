@@ -1,12 +1,12 @@
 // app.js
 // =========================
-/* i18n Translations */
+// i18n Translations
 // =========================
 const i18n = {
   ar: {
     app_title: "برنامج صيام وصلاة داوود عليه السلام - نسخة متقدمة",
     header_title: "برنامج صيام وصلاة داوود عليه السلام",
-    header_subtitle: "رحلة روحانية مباركة",
+    header_subtitle: "رحلة روحانية مباركة • شهر كامل",
     loc_detecting: "جاري تحديد الموقع...",
     btn_grid: "📅 عرض الشبكة",
     btn_list: "📋 عرض القائمة",
@@ -34,13 +34,49 @@ const i18n = {
     label_lng: "خط الطول",
     coords_help: "✨ يتم الحصول عليها تلقائياً عند اختيار مدينة • يمكن التعديل يدوياً للدقة العالية",
     label_method: "🕌 طريقة الحساب",
-    method_ummalqura: "أم القرى (السعودية)",
-    method_karachi: "جامعة العلوم الإسلامية (كراتشي)",
-    method_eg: "الهيئة العامة المصرية للمساحة",
-    method_mwl: "رابطة العالم الإسلامي",
-    method_karachi2: "الجامعة الإسلامية (كراتشي)",
-    method_tehran: "معهد الجيوفيزياء (طهران)",
-    method_isna: "الاتحاد الإسلامي لأمريكا الشمالية",
+    optgroup_world: "🌍 العالم الإسلامي",
+    optgroup_middleeast: "🕌 الشرق الأوسط",
+    optgroup_gulf: "🌊 الخليج العربي",
+    optgroup_africa: "🌍 شمال أفريقيا",
+    optgroup_asia: "🌏 آسيا",
+    optgroup_europe: "🌍 أوروبا",
+    optgroup_special: "🌟 خاص",
+    method_0: "شيعة إثنا عشرية، معهد ليفا، قم",
+    method_1: "جامعة العلوم الإسلامية، كراتشي",
+    method_2: "الجمعية الإسلامية لأمريكا الشمالية (ISNA)",
+    method_3: "رابطة العالم الإسلامي",
+    method_4: "أم القرى، مكة المكرمة",
+    method_5: "الهيئة العامة المصرية للمساحة",
+    method_7: "معهد الجيوفيزياء، جامعة طهران",
+    method_8: "منطقة الخليج",
+    method_9: "الكويت",
+    method_10: "قطر",
+    method_11: "سنغافورة (ماجلس أوغاما إسلام)",
+    method_12: "فرنسا (الاتحاد الإسلامي)",
+    method_13: "تركيا (ديانت)",
+    method_14: "روسيا (الإدارة الروحية لمسلمي روسيا)",
+    method_15: "لجنة رؤية الهلال العالمية",
+    method_16: "دبي، الإمارات",
+    method_17: "ماليزيا (جاكيم)",
+    method_18: "تونس",
+    method_19: "الجزائر",
+    method_20: "إندونيسيا (كيمينتريان أجاما)",
+    method_21: "المغرب",
+    method_22: "البرتغال (كومونيدادي إسلاميكا دي لشبونة)",
+    method_23: "الأردن (وزارة الأوقاف)",
+    method_99: "طريقة مخصصة",
+    label_gym_days: "💪 أيام الجيم (اختر 3 أيام كحد أقصى)",
+    gym_day_sun: "الأحد",
+    gym_day_mon: "الإثنين",
+    gym_day_tue: "الثلاثاء",
+    gym_day_wed: "الأربعاء",
+    gym_day_thu: "الخميس",
+    gym_day_fri: "الجمعة",
+    gym_day_sat: "السبت",
+    gym_days_error: "يرجى اختيار 3 أيام كحد أقصى للجيم! ⚠️",
+    gym_days_hint: "تم اختيار 3 أيام • الأيام الأخرى غير متاحة الآن",
+    method_auto_selected: "تم اختيار طريقة الحساب تلقائياً حسب البلد",
+    method_auto_help: "💡 يتم اختيار طريقة الحساب المناسبة تلقائياً عند اختيار البلد",
     label_notifs_adhan: "🔔 التنبيهات وصوت الأذان",
     toggle_notifs: "تفعيل التنبيهات (يستلزم إذن المتصفح)",
     toggle_adhan: "تشغيل صوت الأذان عند الأذان",
@@ -90,16 +126,12 @@ const i18n = {
     time_for_prayer: (p, city, time, day) => `⏰ حان الآن وقت ${p} (${city})`,
     time_label: (t, day) => `الوقت: ${t} • ${day}`,
 
-    // NEW
-    country_blocked: "هذه الدولة غير مدعومة في التطبيق.",
-    region_blocked: "تم اكتشاف منطقة غير مدعومة، تم استخدام إعدادات افتراضية.",
-
     day_names: ['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت']
   },
   en: {
     app_title: "Davidic Fasting & Prayer Planner — Advanced",
     header_title: "Davidic Fasting & Prayer Planner",
-    header_subtitle: "A blessed spiritual journey",
+    header_subtitle: "A blessed spiritual journey • full month",
     loc_detecting: "Detecting location...",
     btn_grid: "📅 Grid View",
     btn_list: "📋 List View",
@@ -127,13 +159,49 @@ const i18n = {
     label_lng: "Longitude",
     coords_help: "✨ Automatically filled when selecting a city • You can tweak manually for accuracy",
     label_method: "🕌 Calculation method",
-    method_ummalqura: "Umm Al-Qura (Saudi Arabia)",
-    method_karachi: "University of Islamic Sciences (Karachi)",
-    method_eg: "Egyptian General Authority of Survey",
-    method_mwl: "Muslim World League",
-    method_karachi2: "Islamic University (Karachi)",
-    method_tehran: "Institute of Geophysics (Tehran)",
-    method_isna: "ISNA (North America)",
+    optgroup_world: "🌍 Islamic World",
+    optgroup_middleeast: "🕌 Middle East",
+    optgroup_gulf: "🌊 Arabian Gulf",
+    optgroup_africa: "🌍 North Africa",
+    optgroup_asia: "🌏 Asia",
+    optgroup_europe: "🌍 Europe",
+    optgroup_special: "🌟 Special",
+    method_0: "Shia Ithna-Ashari, Leva Institute, Qum",
+    method_1: "University of Islamic Sciences, Karachi",
+    method_2: "Islamic Society of North America (ISNA)",
+    method_3: "Muslim World League",
+    method_4: "Umm Al-Qura University, Makkah",
+    method_5: "Egyptian General Authority of Survey",
+    method_7: "Institute of Geophysics, University of Tehran",
+    method_8: "Gulf Region",
+    method_9: "Kuwait",
+    method_10: "Qatar",
+    method_11: "Majlis Ugama Islam Singapura, Singapore",
+    method_12: "Union Organization Islamic de France",
+    method_13: "Diyanet İşleri Başkanlığı, Turkey",
+    method_14: "Spiritual Administration of Muslims of Russia",
+    method_15: "Moonsighting Committee Worldwide",
+    method_16: "Dubai, UAE (experimental)",
+    method_17: "Jabatan Kemajuan Islam Malaysia (JAKIM)",
+    method_18: "Tunisia",
+    method_19: "Algeria",
+    method_20: "Kementerian Agama Republik Indonesia",
+    method_21: "Morocco",
+    method_22: "Comunidade Islamica de Lisboa, Portugal",
+    method_23: "Ministry of Awqaf, Jordan",
+    method_99: "Custom Method",
+    label_gym_days: "💪 Gym Days (choose maximum 3)",
+    gym_day_sun: "Sunday",
+    gym_day_mon: "Monday",
+    gym_day_tue: "Tuesday",
+    gym_day_wed: "Wednesday",
+    gym_day_thu: "Thursday",
+    gym_day_fri: "Friday",
+    gym_day_sat: "Saturday",
+    gym_days_error: "Please choose maximum 3 gym days! ⚠️",
+    gym_days_hint: "3 days selected • Other days are now disabled",
+    method_auto_selected: "Calculation method automatically selected based on country",
+    method_auto_help: "💡 The appropriate calculation method is automatically selected when you choose a country",
     label_notifs_adhan: "🔔 Notifications & Adhan",
     toggle_notifs: "Enable notifications (requires browser permission)",
     toggle_adhan: "Play adhan at prayer time",
@@ -177,23 +245,15 @@ const i18n = {
     coords_error: "Error fetching coordinates ❌",
     loaded_ok: "Program loaded successfully! ✅",
     adhan_enabled: "Adhan sound enabled ✅",
-    adhan_blocked: "Adhan autoplay was blocked. Click “Enable Adhan sound” then try again.",
+    adhan_blocked: "Adhan autoplay was blocked. Click \"Enable Adhan sound\" then try again.",
     today: "today",
     tomorrow: "tomorrow",
     time_for_prayer: (p, city, time, day) => `⏰ It's time for ${p} in ${city}`,
     time_label: (t, day) => `Time: ${t} • ${day}`,
 
-    // NEW
-    country_blocked: "This country is not supported in the app.",
-    region_blocked: "Unsupported region detected; default settings were used.",
-
     day_names: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
   }
 };
-
-// === Blocklist: Israel (IL) & Western Sahara (EH)
-const BLOCKED_COUNTRIES = new Set(['IL', 'EH']);
-const isBlockedCountry = (code)=> !!code && BLOCKED_COUNTRIES.has(String(code).toUpperCase());
 
 let currentLang = 'ar';
 function t(key, ...args){
@@ -206,7 +266,14 @@ function applyTranslations(){
   document.title = t('app_title');
   document.querySelectorAll('[data-i18n]').forEach(el=>{
     const key = el.getAttribute('data-i18n');
-    el.innerText = t(key);
+    const translated = t(key);
+    if (el.tagName === 'OPTGROUP') {
+      el.setAttribute('label', translated);
+    } else if (el.tagName === 'OPTION') {
+      el.textContent = translated;
+    } else {
+      el.innerText = translated;
+    }
   });
   const cityInput = document.getElementById('cityInput');
   cityInput.placeholder = currentLang==='ar' ? 'اسم مدينتك' : 'Your city';
@@ -238,7 +305,7 @@ let settings = {
   duration: 90,
   country: 'MA',
   city: 'El Jadida',
-  calculationMethod: 4,
+  calculationMethod: 21, // Morocco - وزارة الأوقاف المغربية (Correct API ID)
   latitude: 32.25,
   longitude: -8.51,
   notificationsEnabled: false,
@@ -246,7 +313,8 @@ let settings = {
   adhanVolume: 1,
   adhanSrc: '',
   timezone: null,
-  lang: 'ar'
+  lang: 'ar',
+  gymDays: [1, 3, 5] // Default: Monday, Wednesday, Friday (0=Sunday, 1=Monday, etc.)
 };
 
 let countries = [];
@@ -254,6 +322,41 @@ let schedule = [];
 let prayerTimesCache = {};
 let scheduledTimers = [];
 let lastFetchedTimezone = null;
+
+// Country to calculation method mapping (based on Aladhan API)
+const countryMethodMap = {
+  'MA': 21,  // Morocco
+  'SA': 4,   // Saudi Arabia (Makkah)
+  'EG': 5,   // Egypt
+  'AE': 16,  // UAE (Dubai)
+  'QA': 10,  // Qatar
+  'KW': 9,   // Kuwait
+  'JO': 23,  // Jordan
+  'DZ': 19,  // Algeria
+  'TN': 18,  // Tunisia
+  'PK': 1,   // Pakistan (Karachi)
+  'IR': 7,   // Iran (Tehran)
+  'ID': 20,  // Indonesia
+  'MY': 17,  // Malaysia (JAKIM)
+  'SG': 11,  // Singapore
+  'TR': 13,  // Turkey
+  'FR': 12,  // France
+  'PT': 22,  // Portugal
+  'RU': 14,  // Russia
+  'US': 2,   // USA (ISNA)
+  'CA': 2,   // Canada (ISNA)
+  'GB': 3,   // UK (Muslim World League)
+  'DE': 3,   // Germany (Muslim World League)
+  'NL': 3,   // Netherlands (Muslim World League)
+  'BE': 3,   // Belgium (Muslim World League)
+  'SE': 3,   // Sweden (Muslim World League)
+  'NO': 3,   // Norway (Muslim World League)
+  'DK': 3,   // Denmark (Muslim World League)
+  'ES': 3,   // Spain (Muslim World League)
+  'IT': 3,   // Italy (Muslim World League)
+  'AU': 3,   // Australia (Muslim World League)
+  'NZ': 3    // New Zealand (Muslim World League)
+};
 
 // Notes management
 const STORAGE_KEY = 'davidic_fasting_notes';
@@ -272,11 +375,9 @@ function debounce(fn, wait = 300) {
 function loadSettings(){
   const saved = localStorage.getItem('davidicSettings');
   if (saved) settings = { ...settings, ...JSON.parse(saved) };
-  // sanitize blocked country if previously saved
-  if (isBlockedCountry(settings.country)) {
-    settings.country = 'MA'; settings.countryName = 'Morocco';
-  }
   currentLang = settings.lang || 'ar';
+  // Ensure gymDays is an array
+  if (!Array.isArray(settings.gymDays)) settings.gymDays = [1, 3, 5];
 }
 function loadNotes(){
   try{
@@ -387,110 +488,29 @@ function onVolumeChange(e){
 }
 
 // Location
-// عكس الإحداثيات إلى مدينة/بلد عبر OSM (يدعم CORS)
-async function reverseGeocodeOSM(lat, lon){
-  const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=10&addressdetails=1&accept-language=ar,en`;
-  const res = await fetch(url); // لا تضيفي User-Agent؛ المتصفح يمنعه
-  if (!res.ok) throw new Error('Reverse geocode failed');
-  const data = await res.json();
-  const addr = data.address || {};
-  return {
-    city: addr.city || addr.town || addr.village || addr.municipality || '',
-    country: addr.country || '',
-    country_code: (addr.country_code || '').toUpperCase()
-  };
-}
-
-// بدائل IP مجانية تدعم CORS
-async function ipWho(){
-  const res = await fetch('https://ipwho.is/?fields=city,country,country_code,latitude,longitude,success,message');
-  const d = await res.json();
-  if (!d.success) throw new Error(d.message || 'ipwho.is failed');
-  return { city:d.city, country:d.country, country_code:d.country_code, latitude:d.latitude, longitude:d.longitude };
-}
-async function geoJs(){
-  const res = await fetch('https://get.geojs.io/v1/ip/geo.json');
-  if (!res.ok) throw new Error('geojs failed');
-  const d = await res.json();
-  return { city:d.city, country:d.country, country_code:d.country_code, latitude:+d.latitude, longitude:+d.longitude };
-}
-
-// بديل JSONP بدون CORS (اختياري)
-function jsonp(url){
-  return new Promise((resolve, reject)=>{
-    const cb = '__ipcb_' + Math.random().toString(36).slice(2);
-    const s = document.createElement('script');
-    const cleanup = ()=>{ delete window[cb]; s.remove(); };
-    window[cb] = (data)=>{ cleanup(); resolve(data); };
-    s.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + cb;
-    s.onerror = ()=>{ cleanup(); reject(new Error('JSONP error')); };
-    document.head.appendChild(s);
-  });
-}
-async function ipApiJsonp(){
-  const d = await jsonp('https://ip-api.com/json/?fields=status,country,countryCode,city,lat,lon,message');
-  if (d.status !== 'success') throw new Error(d.message || 'ip-api failed');
-  return { city:d.city, country:d.country, country_code:d.countryCode, latitude:d.lat, longitude:d.lon };
-}
-
-// 👇 الدالة الرئيسية الجديدة
 async function detectLocation(){
   try{
-    // 1) جرّب Geolocation (الأفضل والأدق)
-    if ('geolocation' in navigator){
-      const pos = await new Promise((res, rej)=>navigator.geolocation.getCurrentPosition(res, rej, { enableHighAccuracy:true, timeout:8000 }));
-      const lat = pos.coords.latitude, lon = pos.coords.longitude;
-      const place = await reverseGeocodeOSM(lat, lon);
+    const response = await fetch('https://ipapi.co/json/');
+    if (!response.ok) throw new Error('Location API failed');
+    const data = await response.json();
+    if (data.error) throw new Error(data.reason || 'Location detection failed');
 
-      if (isBlockedCountry(place.country_code)) {
-        showToast(t('region_blocked'), true);
-        // fallback to your safe defaults
-        settings.country = 'MA'; settings.countryName = 'Morocco';
-        settings.city = 'El Jadida'; settings.latitude = 32.25; settings.longitude = -8.51;
-        updateLocationDisplay();
-        return;
-      }
-
-      settings.city = place.city || settings.city || '';
-      settings.country = place.country_code || settings.country || '';
-      settings.countryName = place.country || settings.countryName || '';
-      settings.latitude = lat;
-      settings.longitude = lon;
-      updateLocationDisplay();
-      return;
+    settings.country = data.country_code || 'MA';
+    settings.countryName = data.country_name || 'Morocco';
+    settings.city = data.city || 'El Jadida';
+    settings.latitude = data.latitude || 32.25;
+    settings.longitude = data.longitude || -8.51;
+    
+    // Automatically set calculation method based on country
+    if (countryMethodMap[settings.country]) {
+      settings.calculationMethod = countryMethodMap[settings.country];
+    } else {
+      // Default to Muslim World League for countries not in the map
+      settings.calculationMethod = 3;
     }
-    throw new Error('Geolocation not available');
-  }catch(e){
-    // 2) بدائل IP مع CORS
-    try{
-      const d = await ipWho();
-      if (isBlockedCountry(d.country_code)) throw new Error('blocked-region');
-      settings.city = d.city; settings.country = d.country_code; settings.countryName = d.country;
-      settings.latitude = d.latitude; settings.longitude = d.longitude;
-      updateLocationDisplay();
-      return;
-    }catch{}
-    try{
-      const d2 = await geoJs();
-      if (isBlockedCountry(d2.country_code)) throw new Error('blocked-region');
-      settings.city = d2.city; settings.country = d2.country_code; settings.countryName = d2.country;
-      settings.latitude = d2.latitude; settings.longitude = d2.longitude;
-      updateLocationDisplay();
-      return;
-    }catch{}
-    // 3) JSONP (بدون CORS)
-    try{
-      const d3 = await ipApiJsonp();
-      if (isBlockedCountry(d3.country_code)) throw new Error('blocked-region');
-      settings.city = d3.city; settings.country = d3.country_code; settings.countryName = d3.country;
-      settings.latitude = d3.latitude; settings.longitude = d3.longitude;
-      updateLocationDisplay();
-      return;
-    }catch{}
-
-    // 4) أخيرًا… افتراضي آمن
-    settings.country = 'MA'; settings.countryName = 'Morocco';
-    settings.city = 'El Jadida'; settings.latitude = 32.25; settings.longitude = -8.51;
+    
+    updateLocationDisplay();
+  }catch{
     updateLocationDisplay();
   }
 }
@@ -501,7 +521,7 @@ function updateLocationDisplay(){
 }
 
 // Prayer Times API
-async function fetchPrayerTimes(date, lat, lng, method=4){
+async function fetchPrayerTimes(date, lat, lng, method=21){
   try{
     const [day, month, year] = date.split('/');
     const formattedDate = `${day.padStart(2,'0')}-${month.padStart(2,'0')}-${year}`;
@@ -529,12 +549,12 @@ async function fetchPrayerTimes(date, lat, lng, method=4){
     return { fajr:'05:30', sunrise:'06:50', dhuhr:'13:20', asr:'16:45', maghrib:'19:30', isha:'20:50' };
   }
 }
-async function fetchPrayerTimesWithMeta(date, lat, lng, method=4){
+async function fetchPrayerTimesWithMeta(date, lat, lng, method=21){
   const times = await fetchPrayerTimes(date, lat, lng, method);
   return { times, timezone: settings.timezone || lastFetchedTimezone || Intl.DateTimeFormat().resolvedOptions().timeZone };
 }
 
-// Generate Schedule
+// Generate Schedule with improved gym/fasting logic
 async function generateSchedule(){
   const grid = document.getElementById('calendarGrid');
   const listView = document.getElementById('listView');
@@ -543,6 +563,9 @@ async function generateSchedule(){
   schedule = [];
   const startDate = new Date(settings.startDate);
   const duration = parseInt(settings.duration);
+  
+  // Get gym days from settings
+  const gymDaysSet = new Set(settings.gymDays);
 
   for(let i=0;i<duration;i++){
     const currentDate = new Date(startDate);
@@ -561,12 +584,13 @@ async function generateSchedule(){
     prayerTimesCache[dateStr] = prayerTimes;
 
     const dayOfWeek = currentDate.getDay();
-    const isGymDay = dayOfWeek === 2 || dayOfWeek === 4 || dayOfWeek === 6;
+    const isGymDay = gymDaysSet.has(dayOfWeek);
     
-    // Check if yesterday was a fasting day to avoid consecutive fasting
+    // Improved fasting logic:
+    // - Don't fast on gym days
+    // - Don't fast if yesterday was a fasting day (avoid consecutive fasting)
+    // - First day is NOT automatically a fasting day
     const previousDayFasted = schedule.length > 0 && schedule[schedule.length - 1].fasting;
-    
-    // Fast only if: not a gym day AND didn't fast yesterday
     const shouldFast = !isGymDay && !previousDayFasted;
     
     schedule.push({
@@ -587,6 +611,67 @@ async function generateSchedule(){
   createListView();
   scheduleAdhans().catch(console.error);
   showToast(t('loaded_ok'));
+}
+
+// Handle gym day checkbox changes - disable others when 3 are selected
+function handleGymDayChange(){
+  const checkboxes = [];
+  for (let i = 0; i < 7; i++) {
+    const checkbox = document.getElementById(`gymDay${i}`);
+    if (checkbox) checkboxes.push(checkbox);
+  }
+  
+  const checkedCount = checkboxes.filter(cb => cb.checked).length;
+  const hint = document.getElementById('gymDaysHint');
+  const hintText = document.getElementById('gymDaysHintText');
+  
+  if (checkedCount >= 3) {
+    // Disable unchecked boxes
+    checkboxes.forEach(cb => {
+      if (!cb.checked) {
+        cb.disabled = true;
+        cb.parentElement.style.opacity = '0.5';
+        cb.parentElement.style.cursor = 'not-allowed';
+      }
+    });
+    // Show hint
+    hint.style.display = 'block';
+    hintText.textContent = t('gym_days_hint');
+  } else {
+    // Enable all boxes
+    checkboxes.forEach(cb => {
+      cb.disabled = false;
+      cb.parentElement.style.opacity = '1';
+      cb.parentElement.style.cursor = 'pointer';
+    });
+    // Hide hint
+    hint.style.display = 'none';
+  }
+}
+
+// Handle country change - automatically select appropriate calculation method
+function handleCountryChange(){
+  const countrySelect = document.getElementById('countrySelect');
+  const methodSelect = document.getElementById('calculationMethod');
+  const selectedCountry = countrySelect.value;
+  
+  if (selectedCountry && countryMethodMap[selectedCountry]) {
+    // Auto-select the calculation method for this country
+    methodSelect.value = countryMethodMap[selectedCountry];
+    
+    // Visual feedback - briefly highlight the method dropdown
+    methodSelect.style.transition = 'all 0.3s ease';
+    methodSelect.style.background = 'linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)';
+    methodSelect.style.border = '2px solid #f59e0b';
+    
+    setTimeout(() => {
+      methodSelect.style.background = '';
+      methodSelect.style.border = '';
+    }, 1500);
+  } else if (selectedCountry) {
+    // Default to Muslim World League for countries not in map
+    methodSelect.value = 3;
+  }
 }
 
 // Countries
@@ -612,6 +697,17 @@ async function openSettings(){
   document.getElementById('latitudeInput').value = settings.latitude || '';
   document.getElementById('longitudeInput').value = settings.longitude || '';
   document.getElementById('calculationMethod').value = settings.calculationMethod;
+
+  // Set gym day checkboxes
+  for (let i = 0; i < 7; i++) {
+    const checkbox = document.getElementById(`gymDay${i}`);
+    if (checkbox) {
+      checkbox.checked = settings.gymDays.includes(i);
+    }
+  }
+  
+  // Update gym days UI (disable/enable based on selection)
+  handleGymDayChange();
 
   document.getElementById('toggleNotifs').checked = !!settings.notificationsEnabled;
   document.getElementById('toggleAdhanSound').checked = !!settings.adhanSoundEnabled;
@@ -643,32 +739,29 @@ async function saveSettings(){
   if (latInput && lngInput){
     settings.latitude = parseFloat(latInput);
     settings.longitude = parseFloat(lngInput);
-    // Validate coords via reverse geocode (blocklist)
-    try{
-      const place = await reverseGeocodeOSM(settings.latitude, settings.longitude);
-      if (isBlockedCountry(place.country_code)) {
-        showToast(t('country_blocked'), true);
-        return;
-      }
-      if (!settings.country || settings.country.length !== 2) {
-        settings.country = place.country_code || settings.country;
-        settings.countryName = place.country || settings.countryName;
-      }
-    }catch(e){
-      console.warn('Reverse check failed:', e);
-    }
   }else if (settings.city && settings.country){
     showToast(t('coords_searching'));
     await getCityCoordinates(settings.city, settings.country);
   }
 
-  // Block on manual country pick if somehow set to blocked
-  if (isBlockedCountry(settings.country)) {
-    showToast(t('country_blocked'), true);
+  settings.calculationMethod = parseInt(document.getElementById('calculationMethod').value);
+
+  // Get selected gym days
+  const selectedGymDays = [];
+  for (let i = 0; i < 7; i++) {
+    const checkbox = document.getElementById(`gymDay${i}`);
+    if (checkbox && checkbox.checked) {
+      selectedGymDays.push(i);
+    }
+  }
+  
+  // Validate max 3 gym days
+  if (selectedGymDays.length > 3) {
+    showToast(t('gym_days_error'), true);
     return;
   }
-
-  settings.calculationMethod = parseInt(document.getElementById('calculationMethod').value);
+  
+  settings.gymDays = selectedGymDays;
 
   const country = countries.find(c=>c.code===settings.country);
   settings.countryName = country ? (currentLang==='ar'?country.nameAr:country.name) : settings.country;
@@ -703,18 +796,20 @@ async function getCityCoordinates(city, countryCode){
     if (data && data.length>0){
       const addr = data[0].address || {};
       const cc = (addr.country_code || '').toUpperCase();
-
-      if (isBlockedCountry(cc)) {
-        showToast(t('country_blocked'), true);
-        return;
-      }
-
       settings.latitude = parseFloat(data[0].lat);
       settings.longitude = parseFloat(data[0].lon);
-      if (cc) settings.country = cc;
+      if (cc) {
+        settings.country = cc;
+        // Auto-select calculation method based on country
+        if (countryMethodMap[cc]) {
+          settings.calculationMethod = countryMethodMap[cc];
+        }
+      }
       document.getElementById('latitudeInput').value = settings.latitude.toFixed(4);
       document.getElementById('longitudeInput').value = settings.longitude.toFixed(4);
       if (cc) document.getElementById('countrySelect').value = cc;
+      // Update calculation method dropdown
+      document.getElementById('calculationMethod').value = settings.calculationMethod;
       showToast(t('city_found', city, addr.country || cc || ''));
     } else {
       showToast(t('city_not_found'), true);
@@ -740,7 +835,6 @@ async function loadCountries(){
     { code:'GB', name:'United Kingdom', nameAr:'بريطانيا' }, { code:'DE', name:'Germany', nameAr:'ألمانيا' }, { code:'US', name:'United States', nameAr:'أمريكا' },
     { code:'CA', name:'Canada', nameAr:'كندا' }, { code:'ES', name:'Spain', nameAr:'إسبانيا' }, { code:'IT', name:'Italy', nameAr:'إيطاليا' },
     { code:'ID', name:'Indonesia', nameAr:'إندونيسيا' }, { code:'PK', name:'Pakistan', nameAr:'باكستان' }, { code:'BD', name:'Bangladesh', nameAr:'بنغلاديش' }
-    // Note: IL and EH intentionally not present in fallback
   ];
   try{
     const response = await fetch('https://restcountries.com/v3.1/all?fields=cca2,name,nativeName,translations');
@@ -759,13 +853,10 @@ async function loadCountries(){
   }catch{
     countries = fallbackCountries.sort((a,b)=> (currentLang==='ar'?a.nameAr.localeCompare(b.nameAr,'ar'):a.name.localeCompare(b.name,'en')));
   }
-  // Filter out blocked countries
-  countries = countries.filter(c => !isBlockedCountry(c.code));
-
   const select = document.getElementById('countrySelect');
   select.innerHTML = `<option value="">${t('country_loading')}</option>` +
     countries.map(c=>`<option value="${c.code}">${currentLang==='ar'?c.nameAr:c.name}</option>`).join('');
-  if (settings.country && !isBlockedCountry(settings.country)) select.value = settings.country;
+  if (settings.country) select.value = settings.country;
 }
 
 // Notes Import/Export & Toast
@@ -1144,8 +1235,6 @@ async function fetchCitySuggestions(query, countryCode){
       const country_code = (addr.country_code||'').toUpperCase();
       return { display:item.display_name, city, state, country, country_code, lat:+item.lat, lon:+item.lon };
     });
-    // Filter out blocked countries from suggestions
-    citySuggestionsData = citySuggestionsData.filter(it => !isBlockedCountry(it.country_code));
     renderCitySuggestions(citySuggestionsData);
   }catch(e){ if (e.name!=='AbortError') console.warn('City suggestions error:', e); }
 }
@@ -1167,12 +1256,6 @@ function hideCitySuggestions(){
 }
 function selectCitySuggestion(index){
   const it = citySuggestionsData[index]; if (!it) return;
-
-  if (isBlockedCountry(it.country_code)) {
-    showToast(t('country_blocked'), true);
-    return;
-  }
-
   const cityInput = document.getElementById('cityInput');
   const latInput = document.getElementById('latitudeInput');
   const lonInput = document.getElementById('longitudeInput');
@@ -1195,7 +1278,6 @@ document.addEventListener('click', (e)=>{
   const list = document.getElementById('citySuggestions');
   if (!wrap) return;
   if (!wrap.contains(e.target)) hideCitySuggestions();
-
 });
 
 // Init & Listeners
