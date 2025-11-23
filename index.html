@@ -101,7 +101,7 @@
 
             <div class="form-group">
                 <label for="countrySelect" data-i18n="label_country">🌍 البلد</label>
-                <select id="countrySelect">
+                <select id="countrySelect" onchange="handleCountryChange()">
                     <option value="" data-i18n="country_loading">جاري التحميل...</option>
                 </select>
             </div>
@@ -139,14 +139,84 @@
             <div class="form-group">
                 <label for="calculationMethod" data-i18n="label_method">🕌 طريقة الحساب</label>
                 <select id="calculationMethod">
-                    <option value="4" data-i18n="method_ummalqura">أم القرى (السعودية)</option>
-                    <option value="1" data-i18n="method_karachi">جامعة العلوم الإسلامية (كراتشي)</option>
-                    <option value="2" data-i18n="method_eg">الهيئة العامة المصرية للمساحة</option>
-                    <option value="3" data-i18n="method_mwl">رابطة العالم الإسلامي</option>
-                    <option value="5" data-i18n="method_karachi2">الجامعة الإسلامية (كراتشي)</option>
-                    <option value="7" data-i18n="method_tehran">معهد الجيوفيزياء (طهران)</option>
-                    <option value="8" data-i18n="method_isna">الاتحاد الإسلامي لأمريكا الشمالية</option>
+                    <optgroup label="🌍 العالم الإسلامي" data-i18n="optgroup_world">
+                        <option value="3" data-i18n="method_3">رابطة العالم الإسلامي</option>
+                        <option value="2" data-i18n="method_2">الجمعية الإسلامية لأمريكا الشمالية</option>
+                        <option value="15" data-i18n="method_15">لجنة رؤية الهلال العالمية</option>
+                    </optgroup>
+                    <optgroup label="🕌 الشرق الأوسط" data-i18n="optgroup_middleeast">
+                        <option value="4" data-i18n="method_4">أم القرى، مكة المكرمة</option>
+                        <option value="5" data-i18n="method_5">الهيئة العامة المصرية للمساحة</option>
+                        <option value="16" data-i18n="method_16">دبي، الإمارات</option>
+                        <option value="10" data-i18n="method_10">قطر</option>
+                        <option value="9" data-i18n="method_9">الكويت</option>
+                        <option value="23" data-i18n="method_23">الأردن (وزارة الأوقاف)</option>
+                    </optgroup>
+                    <optgroup label="🌊 الخليج العربي" data-i18n="optgroup_gulf">
+                        <option value="8" data-i18n="method_8">منطقة الخليج</option>
+                    </optgroup>
+                    <optgroup label="🌍 شمال أفريقيا" data-i18n="optgroup_africa">
+                        <option value="21" data-i18n="method_21">المغرب</option>
+                        <option value="19" data-i18n="method_19">الجزائر</option>
+                        <option value="18" data-i18n="method_18">تونس</option>
+                    </optgroup>
+                    <optgroup label="🌏 آسيا" data-i18n="optgroup_asia">
+                        <option value="1" data-i18n="method_1">جامعة العلوم الإسلامية، كراتشي</option>
+                        <option value="7" data-i18n="method_7">معهد الجيوفيزياء، جامعة طهران</option>
+                        <option value="20" data-i18n="method_20">إندونيسيا (كيمينتريان أجاما)</option>
+                        <option value="17" data-i18n="method_17">ماليزيا (جاكيم)</option>
+                        <option value="11" data-i18n="method_11">سنغافورة</option>
+                        <option value="13" data-i18n="method_13">تركيا (ديانت)</option>
+                    </optgroup>
+                    <optgroup label="🌍 أوروبا" data-i18n="optgroup_europe">
+                        <option value="12" data-i18n="method_12">فرنسا (الاتحاد الإسلامي)</option>
+                        <option value="22" data-i18n="method_22">البرتغال</option>
+                        <option value="14" data-i18n="method_14">روسيا</option>
+                    </optgroup>
+                    <optgroup label="🌟 خاص" data-i18n="optgroup_special">
+                        <option value="0" data-i18n="method_0">شيعة إثنا عشرية، قم</option>
+                        <option value="99" data-i18n="method_99">طريقة مخصصة</option>
+                    </optgroup>
                 </select>
+                <small class="muted" data-i18n="method_auto_help">💡 يتم اختيار طريقة الحساب المناسبة تلقائياً عند اختيار البلد</small>
+            </div>
+
+            <div class="form-group">
+                <label data-i18n="label_gym_days">💪 أيام الجيم (اختر 3 أيام كحد أقصى)</label>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 10px;">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="gymDay0" value="0" onchange="handleGymDayChange()">
+                        <span data-i18n="gym_day_sun">الأحد</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="gymDay1" value="1" onchange="handleGymDayChange()">
+                        <span data-i18n="gym_day_mon">الإثنين</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="gymDay2" value="2" onchange="handleGymDayChange()">
+                        <span data-i18n="gym_day_tue">الثلاثاء</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="gymDay3" value="3" onchange="handleGymDayChange()">
+                        <span data-i18n="gym_day_wed">الأربعاء</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="gymDay4" value="4" onchange="handleGymDayChange()">
+                        <span data-i18n="gym_day_thu">الخميس</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="gymDay5" value="5" onchange="handleGymDayChange()">
+                        <span data-i18n="gym_day_fri">الجمعة</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="gymDay6" value="6" onchange="handleGymDayChange()">
+                        <span data-i18n="gym_day_sat">السبت</span>
+                    </label>
+                </div>
+                <div id="gymDaysHint" style="display: none; margin-top: 12px; padding: 12px; background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); border-right: 4px solid #fb923c; border-radius: 8px; color: #9a3412; font-weight: 600; text-align: center;">
+                    <span style="font-size: 1.1rem;">✅</span>
+                    <span id="gymDaysHintText"></span>
+                </div>
             </div>
 
             <div class="form-group">
