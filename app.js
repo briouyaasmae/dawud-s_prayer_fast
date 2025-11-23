@@ -560,13 +560,22 @@ async function generateSchedule(){
     const prayerTimes = await fetchPrayerTimes(fullDateStr, settings.latitude, settings.longitude, settings.calculationMethod);
     prayerTimesCache[dateStr] = prayerTimes;
 
+    const dayOfWeek = currentDate.getDay();
+    const isGymDay = dayOfWeek === 2 || dayOfWeek === 4 || dayOfWeek === 6;
+    
+    // Check if yesterday was a fasting day to avoid consecutive fasting
+    const previousDayFasted = schedule.length > 0 && schedule[schedule.length - 1].fasting;
+    
+    // Fast only if: not a gym day AND didn't fast yesterday
+    const shouldFast = !isGymDay && !previousDayFasted;
+    
     schedule.push({
       day: dayName,
       date: dateStr,
       fullDate: fullDateStr,
       year: year,
-      fasting: i % 2 === 0,
-      gym: i % 2 === 0
+      fasting: shouldFast,
+      gym: isGymDay
     });
 
     if ((i+1)%10===0 || i===duration-1){
